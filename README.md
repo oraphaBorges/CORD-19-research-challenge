@@ -6,7 +6,7 @@
 ### first steps
 + install dependences
 ```bash
-pip3 install -r requerements.txt
+pip3 install -r requirements.txt
 ```
 
 + download the dataset from [kaggle challenger](https://www.kaggle.com/allen-institute-for-ai/CORD-19-research-challenge) and extract file here
