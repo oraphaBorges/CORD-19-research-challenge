@@ -1,13 +1,18 @@
 import os
+import re
 import json
+import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib import style
 from tqdm import tqdm
 
+style.use("ggplot")
 '''
     READING FILES
 '''
 
-dirs = ["biorxiv_medrxiv"]
+dirs = ["biorxiv_medrxiv","comm_use_subset","noncomm_use_subset","custom_license"]
 
 docs = []
 for d in dirs:
@@ -37,10 +42,25 @@ incubation = df[df['full_text'].str.contains('incubation')]
 
 texts = incubation['full_text'].values
 
+incubation_times = []
+
 for t in texts:
-    # print(t)
     for sentence in t.split('. '):
         if 'incubation' in sentence:
             print(sentence)
+            single_day = re.findall(r" \d{1,2} day", sentence)
+            if len(single_day) == 1:
+                # print(single_day[0])
+                # print(sentence)
+                num = single_day[0].split(' ')
+                incubation_times.append(float(num[1]))
         
-    break
+print(incubation_times)
+print(len(incubation_times))
+
+print(f"The mean project incubation time is {np.mean(incubation_times)}")
+
+plt.hist(incubation_times,bins=100)
+plt.ylabel('bins counts')
+plt.xlabel('incubations times')
+plt.show()
